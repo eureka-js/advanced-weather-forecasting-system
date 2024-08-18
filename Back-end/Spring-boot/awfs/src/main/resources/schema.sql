@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "WeatherForecast" (
     "City" VARCHAR(256) NOT NULL,
     "Temperature" REAL NOT NULL,
     "Description" VARCHAR(128) NOT NULL,
-    "DateTime" DATE NOT NULL,
+    "DateTime" TIMESTAMP NOT NULL,
     "UVIndex" INTEGER NOT NULL,
     "Visibility" INTEGER NOT NULL
 );
