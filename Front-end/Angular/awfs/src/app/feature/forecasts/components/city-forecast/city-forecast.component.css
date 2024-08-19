@@ -1,0 +1,14 @@
+li {
+  margin: 5px;
+  width: auto;
+  display: flex;
+}
+
+.right_div {
+  flex: 1;
+  word-wrap: anywhere;
+}
+
+section {
+  margin: 0 35% 5px 35%;
+}

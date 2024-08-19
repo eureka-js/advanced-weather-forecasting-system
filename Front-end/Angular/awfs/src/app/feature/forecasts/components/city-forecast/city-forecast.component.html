@@ -1,0 +1,38 @@
+<main [ngClass]="'container'">
+  <section [ngClass]="'row'">
+    <h2>Request Weather Forecast</h2>
+    <form (submit)="onWForecastReq()" [formGroup]="cityForm">
+      <input formControlName="name" type="text" placeholder="City"> <br>
+      <button [disabled]="cityForm.invalid" type="submit">Request</button>
+    </form>
+
+    <article *ngIf="wForecast">
+      <ul>
+        <li>
+          <div [style.width.px]="leftDivLen"><strong>Name:</strong></div>
+          <div class="right_div">{{ wForecast.city }}</div>
+        </li>
+        <li>
+          <div [style.width.px]="leftDivLen"><strong>Temperature:</strong></div>
+          <div class="right_div">{{ wForecast.temperature }} {{ tempUnit }}</div>
+        </li>
+        <li>
+          <div [style.width.px]="leftDivLen"><strong>Description:</strong></div>
+          <div class="right_div">{{ wForecast.description }}</div>
+        </li>
+        <li>
+          <div [style.width.px]="leftDivLen"><strong>Date and time:</strong></div>
+          <div class="right_div">{{ wForecast.dateTime }}</div>
+        </li>
+        <li>
+          <div [style.width.px]="leftDivLen"><strong>UV index:</strong></div>
+          <div class="right_div">{{ wForecast.uvIndex }}</div>
+        </li>
+        <li>
+          <div [style.width.px]="leftDivLen"><strong>Visibility:</strong></div>
+          <div class="right_div">{{ wForecast.visibility }} {{ lengthUnit }}</div>
+        </li>
+      </ul>
+    </article>
+  </section>
+</main>
