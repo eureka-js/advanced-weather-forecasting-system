@@ -36,14 +36,15 @@ public class WeatherForecastServiceImpl implements WeatherForecastService{
             , cityWeatherInf.get("vis").intValue() * M_IN_KM
         );
 
-        // This version of the whole project does not account for the existence of multiple cities with the same name.
-        wfJpaRepository.getIdByCity(newWForecast.getCity()).ifPresent(newWForecast::setId);
-        wfJpaRepository.save(newWForecast);
+        if (!wfJpaRepository.existsByCityAndDateTime(newWForecast.getCity(), newWForecast.getDateTime())) {
+            wfJpaRepository.save(newWForecast);
+        }
 
         return Optional.of(mapToWeatherForecastDTO(newWForecast));
     }
 
     private WeatherForecastDTO mapToWeatherForecastDTO(WeatherForecast wf) {
-        return new WeatherForecastDTO(wf.getCity(), wf.getTemperature(), wf.getDescription(), wf.getDateTime(), wf.getUVIndex(), wf.getVisibility());
+        return new WeatherForecastDTO(wf.getCity(), wf.getTemperature(), wf.getDescription()
+                , wf.getDateTime(), wf.getUVIndex(), wf.getVisibility());
     }
 }
