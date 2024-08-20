@@ -26,8 +26,7 @@ public class WeatherForecastServiceImpl implements WeatherForecastService{
     @Override
     public Optional<WeatherForecastDTO> getWeatherForecast(final String city) throws JsonProcessingException {
         JsonNode cityWeatherInf = weatherApiClient.getWeatherInfByCity(city);
-
-        return Optional.of(mapToWeatherForecastDTO(wfJpaRepository.save(new WeatherForecast(
+        WeatherForecast newWForecast = new WeatherForecast(
             null
             , cityWeatherInf.get("city_name").asText()
             , cityWeatherInf.get("temp").floatValue()
@@ -35,7 +34,13 @@ public class WeatherForecastServiceImpl implements WeatherForecastService{
             , Timestamp.from(Instant.ofEpochSecond(cityWeatherInf.get("ts").asLong()))
             , cityWeatherInf.get("uv").intValue()
             , cityWeatherInf.get("vis").intValue() * M_IN_KM
-        ))));
+        );
+
+        // This version of the whole project does not account for the existence of multiple cities with the same name.
+        wfJpaRepository.getIdByCity(newWForecast.getCity()).ifPresent(newWForecast::setId);
+        wfJpaRepository.save(newWForecast);
+
+        return Optional.of(mapToWeatherForecastDTO(newWForecast));
     }
 
     private WeatherForecastDTO mapToWeatherForecastDTO(WeatherForecast wf) {
