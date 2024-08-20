@@ -26,16 +26,8 @@ export class CityForecastComponent {
     this.wForecastSub = this.wForecastService.getForecasts().subscribe((wForecasts?: WeatherForecast) => {
         this.wForecast= wForecasts;
 
-        this.cityForm = this.wForecast
-          ? this.fb.group({ name: [this.wForecast.city
-              , [Validators.required, this.isValueChangedValidator(this.wForecast.city)]] })
-          : this.fb.group({ name: [null, [Validators.required]] })
+        this.cityForm = this.fb.group({ name: [this.wForecast ? this.wForecast.city : null, [Validators.required]] });
     });
-  }
-
-
-  isValueChangedValidator(userAtr?: string) {
-    return (control: AbstractControl) => control.value === userAtr ? { "valueMatch": true } : null;
   }
 
   onWForecastReq() {
