@@ -1,8 +1,7 @@
 package en.weatherforecastapp.models.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import en.weatherforecastapp.utilities.ForecastType;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -26,4 +25,18 @@ public class WeatherForecastDTO {
     @NotNull
     @Min(value = 0, message = "Visibility must not be a negative integer")
     private Integer visibility;
+    @NotNull
+    @Min(value = 0, message = "Humidity must not be a negative integer")
+    @Max(value = 100, message = "Humidity must be less or equal to 100")
+    private Integer humidity;
+    @NotNull
+    @Min(value = 0, message = "Wind speed must not be a negative integer")
+    private Float windSpeed;
+    @NotNull
+    private ForecastType forecastType;
+    @NotNull
+    private Float feelsLikeTemperature;
+    @NotNull
+    @Min(value = 0, message = "Pressure must not be a negative integer")
+    private Integer pressure;
 }

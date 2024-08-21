@@ -3,28 +3,73 @@ package en.weatherforecastapp.utilities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import en.weatherforecastapp.utilities.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+
+import java.util.Map;
 
 
 @Component
 @AllArgsConstructor
 public class WeatherApiClient {
+    public static final Map<Integer, String> weatherDesc = Map.ofEntries(
+        Map.entry(0, "Clear sky"),
+        Map.entry(1, "Mainly clear"), Map.entry(2, "Partly cloudy"), Map.entry(3, "Overcast"),
+        Map.entry(45, "Fog"), Map.entry(48, "Depositing rime fog"),
+        Map.entry(51, "Drizzle: light intensity"), Map.entry(53, "Drizzle: moderate intensity"), Map.entry(55, "Drizzle: dense intensity"),
+        Map.entry(56, "Freezing Drizzle: light intensity"), Map.entry(57, "Freezing Drizzle: dense intensity"),
+        Map.entry(61, "Rain: slight intensity"), Map.entry(63, "Rain: moderate intensity"), Map.entry(65, "Rain: heavy intensity"),
+        Map.entry(66, "Freezing Rain: light intensity"), Map.entry(67, "Freezing Rain: heavy intensity"),
+        Map.entry(71, "Snow fall: slight intensity"), Map.entry(73, "Snow fall: moderate intensity"), Map.entry(75, "Snow fall: heavy intensity"),
+        Map.entry(77, "Snow grains"),
+        Map.entry(80, "Rain showers: slight"), Map.entry(81, "Rain showers: moderate"), Map.entry(82, "Rain showers: violent"),
+        Map.entry(85, "Snow showers: slight"), Map.entry(86, "Snow showers: heavy"),
+        Map.entry(95, "Thunderstorm: slight or moderate"),
+        Map.entry(96, "Thunderstorm with slight hail"), Map.entry(99, "Thunderstorm with heavy hail")
+    );
+
     private final RestClient restClient = RestClient.create();
     private ApiKey apiKey;
 
-    public JsonNode getWeatherInfByCity(final String city) throws JsonProcessingException {
+
+    public JsonNode getWeatherInfByCity(final String city, final ForecastType ft) throws JsonProcessingException {
         String uri, response;
         ObjectMapper objectMapper = new ObjectMapper();
 
         uri = String.format(WeatherUriTemplate.CITY_INF, city, "1", apiKey.getOpenWeatherKey());
         response = restClient.get().uri(uri).retrieve().body(String.class);
-        JsonNode cityInf = objectMapper.readTree(response).get(0);
+        JsonNode cityInf = objectMapper.readTree(response);
+        if (cityInf.isEmpty()) {
+            throw new NotFoundException();
+        } else {
+            // This version of the project takes only a single city entry per name
+            cityInf = cityInf.get(0);
+        }
 
-        uri = String.format(WeatherUriTemplate.CITY_WEATHER_INF, cityInf.get("lat"), cityInf.get("lon"), apiKey.getWeatherbitKey());
-        response = restClient.get().uri(uri).retrieve().body(String.class);
+        switch (ft) {
+            case Current -> {
+                uri = String.format(WeatherUriTemplate.CITY_WEATHER_INF
+                    , cityInf.get("lat"), cityInf.get("lon"), apiKey.getWeatherbitKey());
+                response = restClient.get().uri(uri).retrieve().body(String.class);
 
-        return objectMapper.readTree(response).get("data").get(0);
+                return objectMapper.readTree(response).get("data").get(0);
+            }
+            case Hourly -> {
+                uri = String.format(WeatherUriTemplate.HOURLY_WEATHER_INF
+                    , cityInf.get("lat"), cityInf.get("lon"));
+                response = restClient.get().uri(uri).retrieve().body(String.class);
+
+                return objectMapper.readTree(response).get("hourly");
+            }
+            default -> {
+                uri = String.format(WeatherUriTemplate.DAILY_WEATHER_INF
+                    , cityInf.get("lat"), cityInf.get("lon"));
+                response = restClient.get().uri(uri).retrieve().body(String.class);
+
+                return objectMapper.readTree(response).get("daily");
+            }
+        }
     }
 }

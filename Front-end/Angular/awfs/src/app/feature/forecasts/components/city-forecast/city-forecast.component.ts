@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {max, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {ForecastService} from "../../../../core/services/forecast/forecast.service";
 import {WeatherForecast} from "../../../../core/models/weather-forecast.model";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -29,6 +29,7 @@ export class CityForecastComponent {
         this.cityForm = this.fb.group({ name: [this.wForecast ? this.wForecast.city : null, [Validators.required]] });
     });
   }
+
 
   onWForecastReq() {
     this.wForecastService.requestForecastsByCity(this.cityForm.value.name);
