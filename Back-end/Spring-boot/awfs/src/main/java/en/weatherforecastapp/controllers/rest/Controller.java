@@ -1,13 +1,19 @@
 package en.weatherforecastapp.controllers.rest;
 
+import en.weatherforecastapp.models.dto.FavoriteCityDTO;
 import en.weatherforecastapp.models.dto.WeatherForecastCollectionDTO;
-import en.weatherforecastapp.models.dto.WeatherForecastDTO;
+import en.weatherforecastapp.services.CityService;
 import en.weatherforecastapp.services.WeatherForecastService;
 import en.weatherforecastapp.utilities.ForecastType;
 import en.weatherforecastapp.utilities.exceptions.NotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -16,17 +22,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class Controller {
     private final WeatherForecastService wfService;
+    private final CityService cityService;
 
 
     @GetMapping("/api/weather/current/{city}")
-    public ResponseEntity<WeatherForecastDTO> getCurrentForecastForACity(@PathVariable final String city) {
+    public ResponseEntity<WeatherForecastCollectionDTO> getCurrentForecastForACity(@NotBlank @PathVariable final String city) {
         try {
-            WeatherForecastDTO weatherForecast
-                = wfService.getCurrWForecastByCity(city).orElseThrow(NotFoundException::new);
-            // Mock value for when I go over the web service call limit
-            /*WeatherForecastDTO weatherForecast = new WeatherForecastDTO("Orlando", 36.2F
-                    , "Very warm with a slight rise in street crime"
-                    , Timestamp.from(Instant.ofEpochSecond(1723939370)), 6, 15000);*/
+            final WeatherForecastCollectionDTO weatherForecast
+                = wfService.getWForecastCollByCity(city, ForecastType.Current, wfService::createCurrWForecastColl)
+                    .orElseThrow(NotFoundException::new);
 
             return ResponseEntity.ok(weatherForecast);
         } catch (NotFoundException e) {
@@ -38,10 +42,11 @@ public class Controller {
     }
 
     @GetMapping("/api/weather/hourly/{city}")
-    public ResponseEntity<WeatherForecastCollectionDTO> getHourlyForecastForACity(@PathVariable final String city) {
+    public ResponseEntity<WeatherForecastCollectionDTO> getHourlyForecastForACity(@NotBlank @PathVariable final String city) {
         try {
-            WeatherForecastCollectionDTO wForecastColl
-                = wfService.getWForecastCollByCity(city, ForecastType.Hourly).orElseThrow(NotFoundException::new);
+            final WeatherForecastCollectionDTO wForecastColl
+                = wfService.getWForecastCollByCity(city, ForecastType.Hourly, wfService::createHourlyWForecastColl)
+                    .orElseThrow(NotFoundException::new);
 
             return ResponseEntity.ok(wForecastColl);
         } catch (NotFoundException e) {
@@ -53,12 +58,45 @@ public class Controller {
     }
 
     @GetMapping("/api/weather/daily/{city}")
-    public ResponseEntity<WeatherForecastCollectionDTO> getDailyForecastForACity(@PathVariable final String city) {
+    public ResponseEntity<WeatherForecastCollectionDTO> getDailyForecastForACity(@NotBlank @PathVariable final String city) {
         try {
-            WeatherForecastCollectionDTO wForecastColl
-                = wfService.getWForecastCollByCity(city, ForecastType.Daily).orElseThrow(NotFoundException::new);
+            final WeatherForecastCollectionDTO wForecastColl
+                = wfService.getWForecastCollByCity(city, ForecastType.Daily, wfService::createDailyWForecastColl)
+                    .orElseThrow(NotFoundException::new);
 
             return ResponseEntity.ok(wForecastColl);
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/api/user/favorite")
+    public ResponseEntity<String> addFavoriteCity(@Valid @RequestBody final FavoriteCityDTO body) {
+        // @NotBlank annotation in FavoriteCityDTO seems to not work for username while it does work for cityName.
+        // Or there could be some other reason. (Date: 2024-08-24)
+        if (body.getUsername().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            return cityService.addFavoriteCity(body)
+                ? ResponseEntity.status(HttpStatus.CREATED).body("\"message\": \"Favorite city successfully added\"")
+                : ResponseEntity.status(HttpStatus.CREATED).body("\"message\": \"Favorite city already added\"");
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/api/weather/favorites")
+    public ResponseEntity<List<WeatherForecastCollectionDTO>> getFavoriteCityForecasts(@NotBlank @RequestParam final String username) {
+        try {
+            return ResponseEntity.ok(wfService.getFavoriteCityWForecasts(username));
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {

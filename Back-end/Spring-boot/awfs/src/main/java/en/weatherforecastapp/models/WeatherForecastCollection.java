@@ -20,15 +20,15 @@ public class WeatherForecastCollection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "\"Id\"")
     private Long id;
-    @Column(name = "\"City\"", nullable = false)
-    private String city;
     @Column(name = "\"DateTime\"", nullable = false)
     private Timestamp dateTime;
     @Enumerated(EnumType.STRING)
     @Column(name = "\"ForecastType\"", nullable = false)
     private ForecastType forecastType;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "\"weatherForecastCollection\"")
+    @ManyToOne
+    @JoinColumn(name = "\"IdCity\"")
+    private City city;
+    @OneToMany(mappedBy = "weatherForecastCollection", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WeatherForecast> weatherForecasts = new ArrayList<>();
 }

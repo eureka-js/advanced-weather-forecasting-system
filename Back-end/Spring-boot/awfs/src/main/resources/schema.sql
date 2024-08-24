@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "WeatherForecast" (
+/*CREATE TABLE IF NOT EXISTS "WeatherForecast" (
     "Id" INT PRIMARY KEY AUTO_INCREMENT,
     "City" VARCHAR(256) NOT NULL,
     "Temperature" REAL NOT NULL,
@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS "WeatherForecastCollection" (
     "Id" INT PRIMARY KEY AUTO_INCREMENT,
     "City" VARCHAR(256) NOT NULL,
     "DateTime" TIMESTAMP NOT NULL,
-    "ForecastType" ENUM('Hourly', 'Daily') NOT NULL,
+    "ForecastType" ENUM('Current', 'Hourly', 'Daily') NOT NULL,
     "Forecasts" LONG ARRAY NOT NULL
-);
+);*/

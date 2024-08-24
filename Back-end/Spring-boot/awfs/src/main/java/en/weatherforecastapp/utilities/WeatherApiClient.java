@@ -3,12 +3,14 @@ package en.weatherforecastapp.utilities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import en.weatherforecastapp.models.City;
 import en.weatherforecastapp.utilities.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.Map;
+import java.util.Optional;
 
 
 @Component
@@ -34,42 +36,55 @@ public class WeatherApiClient {
     private ApiKey apiKey;
 
 
-    public JsonNode getWeatherInfByCity(final String city, final ForecastType ft) throws JsonProcessingException {
-        String uri, response;
-        ObjectMapper objectMapper = new ObjectMapper();
+    public JsonNode getWeatherInfByCityNameAndForecastType(final String cityName
+            , final ForecastType ft, Optional<City> city) throws JsonProcessingException, NotFoundException {
+        final ObjectMapper ObjMapper = new ObjectMapper();
+        final String lat, lon;
+        if (city.isPresent()) {
+            lat = city.get().getLatitude().toString();
+            lon = city.get().getLongitude().toString();
+        } else {
+            JsonNode cityInf = getCityInf(cityName, ObjMapper);
+            lat = cityInf.get("lat").asText();
+            lon = cityInf.get("lon").asText();
+        }
 
-        uri = String.format(WeatherUriTemplate.CITY_INF, city, "1", apiKey.getOpenWeatherKey());
-        response = restClient.get().uri(uri).retrieve().body(String.class);
-        JsonNode cityInf = objectMapper.readTree(response);
+        final String uri, res;
+        switch (ft) {
+            case Current -> {
+                uri = String.format(WeatherUriTemplate.CURR_WEATHER_INF, lat, lon);
+                res = restClient.get().uri(uri).retrieve().body(String.class);
+
+                return ObjMapper.readTree(res).get("current");
+            }
+            case Hourly -> {
+                uri = String.format(WeatherUriTemplate.HOURLY_WEATHER_INF, lat, lon);
+                res = restClient.get().uri(uri).retrieve().body(String.class);
+
+                return ObjMapper.readTree(res).get("hourly");
+            }
+            default -> {
+                uri = String.format(WeatherUriTemplate.DAILY_WEATHER_INF, lat, lon);
+                res = restClient.get().uri(uri).retrieve().body(String.class);
+
+                return ObjMapper.readTree(res).get("daily");
+            }
+        }
+    }
+
+    public JsonNode getCityInf(final String cityName, final ObjectMapper om)
+            throws JsonProcessingException, NotFoundException {
+        final String uri = String.format(WeatherUriTemplate.CITY_INF, cityName, "1", apiKey.getOpenWeatherKey());
+        final String res = restClient.get().uri(uri).retrieve().body(String.class);
+
+        JsonNode cityInf = om.readTree(res);
         if (cityInf.isEmpty()) {
             throw new NotFoundException();
         } else {
-            // This version of the project takes only a single city entry per name
+            // This version of the project takes only a single city entry per city name.
             cityInf = cityInf.get(0);
         }
 
-        switch (ft) {
-            case Current -> {
-                uri = String.format(WeatherUriTemplate.CITY_WEATHER_INF
-                    , cityInf.get("lat"), cityInf.get("lon"), apiKey.getWeatherbitKey());
-                response = restClient.get().uri(uri).retrieve().body(String.class);
-
-                return objectMapper.readTree(response).get("data").get(0);
-            }
-            case Hourly -> {
-                uri = String.format(WeatherUriTemplate.HOURLY_WEATHER_INF
-                    , cityInf.get("lat"), cityInf.get("lon"));
-                response = restClient.get().uri(uri).retrieve().body(String.class);
-
-                return objectMapper.readTree(response).get("hourly");
-            }
-            default -> {
-                uri = String.format(WeatherUriTemplate.DAILY_WEATHER_INF
-                    , cityInf.get("lat"), cityInf.get("lon"));
-                response = restClient.get().uri(uri).retrieve().body(String.class);
-
-                return objectMapper.readTree(response).get("daily");
-            }
-        }
+        return cityInf;
     }
 }

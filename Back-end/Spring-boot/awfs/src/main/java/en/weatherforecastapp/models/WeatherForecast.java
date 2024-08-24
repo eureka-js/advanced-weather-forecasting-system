@@ -1,5 +1,6 @@
 package en.weatherforecastapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import en.weatherforecastapp.utilities.ForecastType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 
+@JsonIgnoreProperties("weatherForecastCollection")
 @Entity(name = "\"WeatherForecast\"")
 @Data
 @AllArgsConstructor
@@ -42,7 +44,7 @@ public class WeatherForecast {
     @Column(name = "\"Pressure\"", nullable = false)
     private Integer pressure;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "\"weatherForecastCollection\"")
+    @ManyToOne
+    @JoinColumn(name = "\"IdWeatherForecastCollection\"")
     private WeatherForecastCollection weatherForecastCollection;
 }

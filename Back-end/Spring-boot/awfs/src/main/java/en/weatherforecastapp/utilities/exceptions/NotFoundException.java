@@ -1,4 +1,4 @@
 package en.weatherforecastapp.utilities.exceptions;
 
 
-public class NotFoundException extends RuntimeException { }
+public class NotFoundException extends Exception { }

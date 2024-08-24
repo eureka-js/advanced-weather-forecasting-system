@@ -1,5 +1,6 @@
 package en.weatherforecastapp.models.dto;
 
+import en.weatherforecastapp.models.WeatherForecast;
 import en.weatherforecastapp.utilities.ForecastType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 public class WeatherForecastDTO {
+    private Long id;
     @NotBlank
     private String city;
     @NotNull
@@ -39,4 +41,20 @@ public class WeatherForecastDTO {
     @NotNull
     @Min(value = 0, message = "Pressure must not be a negative integer")
     private Integer pressure;
+
+
+    public WeatherForecastDTO (WeatherForecast wf) {
+        this.id = wf.getId();
+        this.city = wf.getCity();
+        this.temperature = wf.getTemperature();
+        this.description = wf.getDescription();
+        this.dateTime = wf.getDateTime();
+        this.uvIndex = wf.getUVIndex();
+        this.visibility = wf.getVisibility();
+        this.humidity = wf.getHumidity();
+        this.windSpeed = wf.getWindSpeed();
+        this.forecastType = wf.getForecastType();
+        this.feelsLikeTemperature = wf.getFeelsLikeTemperature();
+        this.pressure = wf.getPressure();
+    }
 }
