@@ -34,16 +34,15 @@ public class CityServiceImpl implements CityService {
             user = userService.save(newFavCityDTO.getUsername());
 
             if (user.isEmpty()) {
-                return false;
+                throw new RuntimeException();
             }
         }
 
         Optional<City> newFavCity = cityJpaRepository.findCityByName(newFavCityDTO.getCityName());
         if (newFavCity.isEmpty()) {
             newFavCity = getCityByName(newFavCityDTO.getCityName());
-
             if (newFavCity.isEmpty()) {
-                return false;
+                throw new NotFoundException("The city doesn't exist");
             }
         }
 

@@ -79,7 +79,7 @@ public class WeatherApiClient {
 
         JsonNode cityInf = om.readTree(res);
         if (cityInf.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("The city doesn't exist");
         } else {
             // This version of the project takes only a single city entry per city name.
             cityInf = cityInf.get(0);

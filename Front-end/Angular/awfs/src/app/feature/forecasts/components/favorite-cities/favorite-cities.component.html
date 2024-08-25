@@ -1,0 +1,73 @@
+<main [ngClass]="'container'">
+  <div [ngClass]="'row'" id="cont">
+    <section>
+      <div class="input_div">
+        <form (submit)="onAddFavoriteCityButt()" [formGroup]="addFavCityForm">
+          <input formControlName="username" type="text" placeholder="username"> <br>
+          <em>{{ message }}</em> <br>
+          <input formControlName="cityName" type="text" placeholder="city"> <br>
+          <button [disabled]="addFavCityForm.invalid" type="submit">ADD</button>
+        </form>
+        <button (click)="onGetForecastsButt()"
+                type="submit"
+                [disabled]="!addFavCityForm.get('username')?.value">SHOW FORECASTS</button>
+      </div>
+    </section>
+    <section [ngClass]="{ 'hidden': forecastColls }" class="non_curr_weather_section">
+      <article>
+        <ul>
+          <li *ngFor="let fColl of forecastColls" class="flex_horizontal">
+              <div *ngFor="let forecast of fColl.weatherForecasts" class="individual_forecast">
+                <ul>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Name:</strong></div>
+                    <div class="right_div">{{ fColl.city }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Temperature:</strong></div>
+                    <div class="right_div">{{ forecast.temperature }} {{ TEMP_UNIT }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Description:</strong></div>
+                    <div class="right_div">{{ forecast.description }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Date and time:</strong></div>
+                    <div class="right_div">{{ forecast.dateTime }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>UV index:</strong></div>
+                    <div class="right_div">{{ forecast.uvIndex }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Visibility:</strong></div>
+                    <div class="right_div">{{ forecast.visibility }} {{ LENGTH_UNIT }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Humidity:</strong></div>
+                    <div class="right_div">{{ forecast.humidity }}%</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Wind speed:</strong></div>
+                    <div class="right_div">{{ forecast.windSpeed }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Forecast type:</strong></div>
+                    <div class="right_div">{{ forecast.forecastType }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Feels like temperature:</strong></div>
+                    <div class="right_div">{{ forecast.feelsLikeTemperature }} {{ TEMP_UNIT }}</div>
+                  </li>
+                  <li>
+                    <div [style.width.px]="leftDivLen"><strong>Pressure:</strong></div>
+                    <div class="right_div">{{ forecast.pressure }}</div>
+                  </li>
+                </ul>
+              </div>
+          </li>
+        </ul>
+      </article>
+    </section>
+  </div>
+</main>

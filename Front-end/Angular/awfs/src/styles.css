@@ -7,72 +7,103 @@
 body {
   background: #191c27;
 }
-
 main {
-  margin: 1%;
+  height: 100vh;
 }
-
 section {
+  margin: auto;
+  width: 31%;
   padding: 10px;
   background-color: #1d202c;
   border-radius: 10px;
   border-top: solid 15px #1c5365;
   text-align: center;
 }
-
 article {
-  border-left: dashed 1px #1c5365;
-  border-right: dashed 1px #1c5365;
-  border-radius: 10px;
-  margin-top: 20px;
-  padding: 10px;
   text-align: start;
+  min-height: 30vh;
+  max-height: 85vh;
+  overflow-y: auto;
 }
-
+li {
+  margin: 5px;
+  display: flex;
+}
 h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
-
+strong {
+  color: #3facd3;
+}
 input {
-  border: none;
   background: #151927;
-  padding: 5px;
+  padding: 7px;
   text-align: center;
   margin-bottom: 5px;
   outline: none;
-}
+  border: none;
+  border-radius: 5px;
 
+}
 input:focus {
   border-left: dashed 1px #1c5365;
   border-right: dashed 1px #1c5365;
 }
-
 button {
   border: none;
   border-radius: 5px;
   background: #215116;
-  padding: 5px;
-  text-align: center;
-  margin-bottom: 5px;
+  padding: 7px;
 }
-
 button:hover {
   background: #2a671c;
 }
-
 button:active {
   background: #163a10;
 }
-
 button:disabled {
   background: #555555;
 }
 
-strong {
-  color: #3facd3;
+.input_div>button {
+  height: 100%;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}
+.input_div {
+  display: flex;
+  align-items: center;
+}
+.input_div>form {
+  width: 90%;
+  height: 100%;
+}
+.non_curr_weather_section {
+  margin-top: 5%;
+  background-color: #191c27;
+  border-top: none;
+}
+.individual_forecast {
+  background-color: #1d202c;
+  border-left: dashed 1px #1c5365;
+  border-right: dashed 1px #1c5365;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-ul {
-  list-style-type: none;
+#flex_container {
+  display: flex;
+  margin: 0 10vh;
+}
+
+::-webkit-scrollbar {
+  background: #1d202c;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1c5365;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-corner {
+  background: #191c27;
 }

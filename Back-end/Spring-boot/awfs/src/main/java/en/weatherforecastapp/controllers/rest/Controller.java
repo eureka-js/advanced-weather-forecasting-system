@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("weatherforecastapp")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@Validated
 public class Controller {
     private final WeatherForecastService wfService;
     private final CityService cityService;
@@ -28,9 +29,9 @@ public class Controller {
     @GetMapping("/api/weather/current/{city}")
     public ResponseEntity<WeatherForecastCollectionDTO> getCurrentForecastForACity(@NotBlank @PathVariable final String city) {
         try {
-            final WeatherForecastCollectionDTO weatherForecast
-                = wfService.getWForecastCollByCity(city, ForecastType.Current, wfService::createCurrWForecastColl)
-                    .orElseThrow(NotFoundException::new);
+            final WeatherForecastCollectionDTO weatherForecast = wfService
+                .getWForecastCollByCity(city, ForecastType.Current, wfService::createCurrWForecastColl)
+                .orElseThrow(NotFoundException::new);
 
             return ResponseEntity.ok(weatherForecast);
         } catch (NotFoundException e) {
@@ -44,9 +45,9 @@ public class Controller {
     @GetMapping("/api/weather/hourly/{city}")
     public ResponseEntity<WeatherForecastCollectionDTO> getHourlyForecastForACity(@NotBlank @PathVariable final String city) {
         try {
-            final WeatherForecastCollectionDTO wForecastColl
-                = wfService.getWForecastCollByCity(city, ForecastType.Hourly, wfService::createHourlyWForecastColl)
-                    .orElseThrow(NotFoundException::new);
+            final WeatherForecastCollectionDTO wForecastColl = wfService
+                .getWForecastCollByCity(city, ForecastType.Hourly, wfService::createHourlyWForecastColl)
+                .orElseThrow(NotFoundException::new);
 
             return ResponseEntity.ok(wForecastColl);
         } catch (NotFoundException e) {
@@ -60,8 +61,8 @@ public class Controller {
     @GetMapping("/api/weather/daily/{city}")
     public ResponseEntity<WeatherForecastCollectionDTO> getDailyForecastForACity(@NotBlank @PathVariable final String city) {
         try {
-            final WeatherForecastCollectionDTO wForecastColl
-                = wfService.getWForecastCollByCity(city, ForecastType.Daily, wfService::createDailyWForecastColl)
+            final WeatherForecastCollectionDTO wForecastColl = wfService
+                    .getWForecastCollByCity(city, ForecastType.Daily, wfService::createDailyWForecastColl)
                     .orElseThrow(NotFoundException::new);
 
             return ResponseEntity.ok(wForecastColl);
@@ -83,10 +84,11 @@ public class Controller {
 
         try {
             return cityService.addFavoriteCity(body)
-                ? ResponseEntity.status(HttpStatus.CREATED).body("\"message\": \"Favorite city successfully added\"")
-                : ResponseEntity.status(HttpStatus.CREATED).body("\"message\": \"Favorite city already added\"");
+                ? ResponseEntity.status(HttpStatus.CREATED).body("{ \"message\": \"Favorite city successfully added\" }")
+                : ResponseEntity.status(HttpStatus.CONFLICT).body("{ \"message\": \"Favorite city already added\" }");
         } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"message\": \"" + e.getMessage() + "\" }");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();

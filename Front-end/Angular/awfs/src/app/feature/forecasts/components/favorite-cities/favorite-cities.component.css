@@ -1,0 +1,51 @@
+section {
+  margin-top: 5vh;
+}
+section:first-child {
+  min-width: 280px;
+  max-width: 280px;
+  margin-right: 20px;
+  height: 180px;
+}
+section:last-child {
+  width: 80%;
+  height: 88vh;
+}
+article {
+  min-height: 100%;
+}
+form {
+  margin-top: 15px;
+}
+input:first-of-type {
+  margin-bottom: 50px;
+}
+input:last-of-type {
+  margin-top: 5px;
+}
+
+.input_div {
+  height: 100%;
+}
+.input_div > button {
+  height: 175px;
+}
+.hidden {
+  border-top: none;
+  background-color: #191c27;
+}
+.flex_horizontal {
+  margin: 10px 10px;
+  flex-direction: row;
+}
+.individual_forecast {
+  margin-right: 10px;
+  min-width: 300px;
+  max-width: 300px;
+}
+
+#cont {
+  display: flex;
+  margin: auto;
+  width: 90%;
+}

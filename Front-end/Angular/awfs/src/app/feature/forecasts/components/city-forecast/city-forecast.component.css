@@ -1,14 +1,28 @@
-li {
-  margin: 5px;
-  width: auto;
-  display: flex;
-}
-
 .right_div {
   flex: 1;
-  word-wrap: anywhere;
+}
+.input_div {
+  height: 100px;
 }
 
-section {
-  margin: 0 35% 5px 35%;
+#flex_container > section:nth-child(2) {
+  margin-top: 5vh;
+}
+
+
+@media only screen and (max-width: 768px) {
+  section {
+    margin: 5px 0;
+    width: 100%;
+    border-bottom: solid 15px #1c5365;
+  }
+
+  .non_curr_weather_section {
+    margin-top: 0;
+    border-bottom: none;
+  }
+
+  #flex_container {
+    display: block;
+  }
 }
