@@ -1,18 +1,16 @@
 <main [ngClass]="'container'">
   <div [ngClass]="'row'" id="flex-container">
     <section class="non-curr-weather-section">
-      <div *ngIf="hourlyWFColl">
-        <article>
-          <ul>
-            <li *ngFor="let wForecast of hourlyWFColl.weatherForecasts" class="individual-forecast">
-              <app-individual-forecast [wForecast]="wForecast"
-                                       [divLen]="leftDivLen"
-                                       [TEMP_UNIT]="TEMP_UNIT"
-                                       [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
-            </li>
-          </ul>
-        </article>
-      </div>
+      <article *ngIf="hourlyWFColl">
+        <ul>
+          <li *ngFor="let wForecast of hourlyWFColl.weatherForecasts" class="individual-forecast">
+            <app-individual-forecast [wForecast]="wForecast"
+                                     [divLen]="leftDivLen"
+                                     [TEMP_UNIT]="TEMP_UNIT"
+                                     [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
+          </li>
+        </ul>
+      </article>
     </section>
     <section>
       <h2>Request Weather Forecast</h2>
@@ -42,18 +40,16 @@
       </div>
     </section>
     <section class="non-curr-weather-section">
-      <div *ngIf="dailyWFColl">
-        <article>
-          <ul>
-            <li *ngFor="let wForecast of dailyWFColl.weatherForecasts" class="individual-forecast">
-              <app-individual-forecast [wForecast]="wForecast"
-                                       [divLen]="leftDivLen"
-                                       [TEMP_UNIT]="TEMP_UNIT"
-                                       [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
-            </li>
-          </ul>
-        </article>
-      </div>
+      <article *ngIf="dailyWFColl">
+        <ul>
+          <li *ngFor="let wForecast of dailyWFColl.weatherForecasts" class="individual-forecast">
+            <app-individual-forecast [wForecast]="wForecast"
+                                     [divLen]="leftDivLen"
+                                     [TEMP_UNIT]="TEMP_UNIT"
+                                     [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
+          </li>
+        </ul>
+      </article>
     </section>
   </div>
 </main>

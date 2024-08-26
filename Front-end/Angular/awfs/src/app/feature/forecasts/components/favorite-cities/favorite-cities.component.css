@@ -1,14 +1,13 @@
 section {
-  margin-top: 5vh;
+  margin-top: 10px;
 }
 section:first-child {
-  min-width: 290px;
-  max-width: 290px;
+  min-width: 320px;
+  max-width: 320px;
   margin-right: 20px;
 }
 section:last-child {
   width: 80%;
-  height: 88vh;
 }
 article {
   min-height: 100%;
@@ -120,17 +119,16 @@ input:last-of-type {
 
 #cont {
   display: flex;
-  margin: auto;
-  width: 90%;
+  margin: 0 1vh;
 }
 
 
 @media only screen and (max-width: 768px) {
   section:first-child {
-    margin: 15px auto;
+    margin: auto;
   }
   section:last-child {
-    min-width: 95%;
+    max-width: 100%;
   }
 
   #cont {

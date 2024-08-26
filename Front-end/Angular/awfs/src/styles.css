@@ -1,18 +1,29 @@
 * {
   margin: 0;
   padding: 0;
+  max-height: 100vh;
   color: silver;
+  box-sizing: border-box;
 }
 
 body {
   background: #191c27;
 }
+header {
+  padding-top: 1vh;
+  margin: auto;
+  min-width: 40%;
+  max-width: 60%;
+  border-radius: 0 0 10px 10px;
+  background-color: #1d202c;
+}
 main {
-  height: 100vh;
+  margin-top: 2vh;
 }
 section {
   margin: auto;
   width: 31%;
+  max-height: max-content;
   padding: 10px;
   background-color: #1d202c;
   border-radius: 10px;
@@ -23,14 +34,17 @@ article {
   text-align: start;
   min-height: 30vh;
   max-height: 85vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 li {
   margin: 5px;
   display: flex;
 }
+h1 {
+  text-align: center;
+}
 h2 {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 strong {
   color: #3facd3;
@@ -78,21 +92,21 @@ button:disabled {
   height: 100%;
 }
 .non-curr-weather-section {
-  margin-top: 5%;
+  margin-top: 25px;
   background-color: #191c27;
   border-top: none;
 }
 .individual-forecast {
+  padding: 10px;
   background-color: #1d202c;
   border-left: dashed 1px #1c5365;
   border-right: dashed 1px #1c5365;
   border-radius: 10px;
-  padding: 10px;
 }
 
 #flex-container {
   display: flex;
-  margin: 0 10vh;
+  margin: 0 1vh;
 }
 
 ::-webkit-scrollbar {

@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {provideHttpClient} from "@angular/common/http";
+import {CoreModule} from "./core/core.module";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {provideHttpClient} from "@angular/common/http";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CoreModule
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]
