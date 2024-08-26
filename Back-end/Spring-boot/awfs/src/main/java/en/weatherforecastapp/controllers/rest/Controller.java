@@ -106,4 +106,26 @@ public class Controller {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/api/user/favorites/{username}")
+    public ResponseEntity<List<FavoriteCityDTO>> getFavoriteCities(@NotBlank @PathVariable final String username) {
+        try {
+            return ResponseEntity.ok(cityService.getFavoriteCities(username));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/api/user/favorite/{id}")
+    public ResponseEntity<String> removeFavoriteCity(@NotBlank @PathVariable final Long id) {
+        try {
+            return cityService.removeFavoriteCity(id)
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

@@ -43,7 +43,6 @@ input {
   outline: none;
   border: none;
   border-radius: 5px;
-
 }
 input:focus {
   border-left: dashed 1px #1c5365;
@@ -65,25 +64,25 @@ button:disabled {
   background: #555555;
 }
 
-.input_div>button {
+.input-div>button {
   height: 100%;
   writing-mode: vertical-lr;
   text-orientation: upright;
 }
-.input_div {
+.input-div {
   display: flex;
   align-items: center;
 }
-.input_div>form {
+.input-div>form {
   width: 90%;
   height: 100%;
 }
-.non_curr_weather_section {
+.non-curr-weather-section {
   margin-top: 5%;
   background-color: #191c27;
   border-top: none;
 }
-.individual_forecast {
+.individual-forecast {
   background-color: #1d202c;
   border-left: dashed 1px #1c5365;
   border-right: dashed 1px #1c5365;
@@ -91,7 +90,7 @@ button:disabled {
   padding: 10px;
 }
 
-#flex_container {
+#flex-container {
   display: flex;
   margin: 0 10vh;
 }

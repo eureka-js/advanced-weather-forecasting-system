@@ -2,10 +2,9 @@ section {
   margin-top: 5vh;
 }
 section:first-child {
-  min-width: 280px;
-  max-width: 280px;
+  min-width: 290px;
+  max-width: 290px;
   margin-right: 20px;
-  height: 180px;
 }
 section:last-child {
   width: 80%;
@@ -24,28 +23,123 @@ input:last-of-type {
   margin-top: 5px;
 }
 
-.input_div {
-  height: 100%;
+.input-div {
+  height: 180px;
 }
-.input_div > button {
+.input-div > button {
   height: 175px;
 }
 .hidden {
   border-top: none;
   background-color: #191c27;
 }
-.flex_horizontal {
+.flex-horizontal {
   margin: 10px 10px;
   flex-direction: row;
 }
-.individual_forecast {
+.individual-forecast {
   margin-right: 10px;
   min-width: 300px;
   max-width: 300px;
 }
+.fav-city-management button {
+  display: block;
+  margin-top: 20px;
+}
+.fav-city-management {
+  display: flex;
+}
+.fav-city-management div {
+  margin: auto;
+}
+.fav-city-management button:last-child {
+  border-radius: 0 0 5px 5px;
+  background-color: #670c0c;
+}
+.fav-city-management button:last-child:disabled {
+  background-color: dimgray;
+}
+.fav-city-management button:last-child:disabled:hover {
+  background-color: dimgray;
+}
+.fav-city-management button:last-child:disabled:active {
+  background-color: dimgray;
+}
+.fav-city-management button:last-child:hover {
+  background-color: #830f0f;
+}
+.fav-city-management button:last-child:active {
+  background-color: #4c0909;
+}
+
+/* Dropdown menu start */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-top: 40px;
+}
+.dropdown-button {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #1c5365;
+  min-width: 130px;
+  max-width: 130px;
+  margin: 0 5px 0 5px;
+}
+.dropdown-button:hover {
+  background-color: #246d85;
+}
+.dropdown-button:active {
+  background-color: #133a47;
+}
+.dropdown-content {
+  cursor: default;
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.dropdown-content span {
+  margin-top: 5px;
+  padding: 5px;
+  display: block;
+}
+.dropdown-content span:hover {
+  background-color: #1c5365;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown:not(hover) .dropdown-content {
+  display: none;
+}
+.dropdown ::-webkit-scrollbar {
+  width: 10px;
+}
+/* Dropdown menu end */
 
 #cont {
   display: flex;
   margin: auto;
   width: 90%;
+}
+
+
+@media only screen and (max-width: 768px) {
+  section:first-child {
+    margin: 15px auto;
+  }
+  section:last-child {
+    min-width: 95%;
+  }
+
+  #cont {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 1720px) {
+  section:last-child {
+    width: 100vh;
+  }
 }

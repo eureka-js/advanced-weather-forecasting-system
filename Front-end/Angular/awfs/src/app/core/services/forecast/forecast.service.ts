@@ -62,8 +62,7 @@ export class ForecastService {
   }
 
   reqHourlyForecastCollByCityName(cityName: string): void {
-    this.dataService.reqHourlyForecastCollByCityName(cityName)
-      .subscribe({
+    this.dataService.reqHourlyForecastCollByCityName(cityName).subscribe({
       next: (data: WeatherForecastCollection) => {
         this.hourlyWForecastColl = data;
         this.hourlyWForecastCollSubject.next(this.hourlyWForecastColl)

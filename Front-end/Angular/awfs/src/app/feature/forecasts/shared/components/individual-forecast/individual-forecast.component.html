@@ -1,0 +1,46 @@
+<ul>
+  <li>
+    <div [style.width.px]="divLen"><strong>Name:</strong></div>
+    <div>{{ wForecast.city }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Temperature:</strong></div>
+    <div>{{ wForecast.temperature }} {{ TEMP_UNIT }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Description:</strong></div>
+    <div>{{ wForecast.description }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Date and time:</strong></div>
+    <div>{{ wForecast.dateTime }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>UV index:</strong></div>
+    <div>{{ wForecast.uvIndex }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Visibility:</strong></div>
+    <div>{{ wForecast.visibility }} {{ LENGTH_UNIT }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Humidity:</strong></div>
+    <div>{{ wForecast.humidity }}%</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Wind speed:</strong></div>
+    <div>{{ wForecast.windSpeed }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Forecast type:</strong></div>
+    <div>{{ wForecast.forecastType }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Feels like temperature:</strong></div>
+    <div>{{ wForecast.feelsLikeTemperature }} {{ TEMP_UNIT }}</div>
+  </li>
+  <li>
+    <div [style.width.px]="divLen"><strong>Pressure:</strong></div>
+    <div>{{ wForecast.pressure }}</div>
+  </li>
+</ul>

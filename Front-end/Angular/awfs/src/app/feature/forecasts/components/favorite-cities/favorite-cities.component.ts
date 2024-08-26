@@ -4,6 +4,7 @@ import {ForecastService} from "../../../../core/services/forecast/forecast.servi
 import {Subscription} from "rxjs";
 import {CityService} from "../../../../core/services/city/city.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FavoriteCity} from "../../../../core/models/favorite-city.model";
 
 
 @Component({
@@ -12,10 +13,12 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrl: './favorite-cities.component.css'
 })
 export class FavoriteCitiesComponent {
-  protected username?: string;
+  protected favCities: FavoriteCity[] = [];
+  protected cityNamesSub?: Subscription;
   protected forecastColls?: WeatherForecastCollection[];
   protected forecastCollsSub!: Subscription;
   protected addFavCityForm!: FormGroup;
+  protected selectedFavCity?: string;
   protected message: string = "";
   protected readonly leftDivLen: number = 15 * 7.5;
   protected readonly TEMP_UNIT: string = "°C";
@@ -25,6 +28,9 @@ export class FavoriteCitiesComponent {
   constructor(private forecastService: ForecastService, private cityService: CityService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    this.cityNamesSub = this.cityService.getFavCities()
+      .subscribe((cityNames: FavoriteCity[]) => this.favCities = cityNames);
+
     this.addFavCityForm = this.fb.group({
       username: [null, Validators.required]
       , cityName: [null, Validators.required]
@@ -37,6 +43,20 @@ export class FavoriteCitiesComponent {
 
   onGetForecastsButt(): void {
     this.forecastService.reqForecastCollByFavoriteCities(this.addFavCityForm.get("username")?.value);
+  }
+
+  onGetFavoriteCitiesButt(): void {
+    this.cityService.getFavoriteCities(this.addFavCityForm.get("username")?.value);
+  }
+
+  onDelFavoriteCityButt(): void {
+    this.cityService.delFavoriteCity(this.selectedFavCity!).subscribe({
+      next: (data: any) => {
+        if (!data) {
+          this.selectedFavCity = undefined;
+        }
+      }
+    });
   }
 
   onAddFavoriteCityButt(): void {

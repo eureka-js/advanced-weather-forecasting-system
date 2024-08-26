@@ -1,56 +1,14 @@
 <main [ngClass]="'container'">
-  <div [ngClass]="'row'" id="flex_container">
-    <section class="non_curr_weather_section">
+  <div [ngClass]="'row'" id="flex-container">
+    <section class="non-curr-weather-section">
       <div *ngIf="hourlyWFColl">
         <article>
           <ul>
-            <li *ngFor="let wForecast of hourlyWFColl.weatherForecasts" class="individual_forecast">
-              <ul>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Name:</strong></div>
-                  <div class="right_div">{{ wForecast.city }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Temperature:</strong></div>
-                  <div class="right_div">{{ wForecast.temperature }} {{ TEMP_UNIT }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Description:</strong></div>
-                  <div class="right_div">{{ wForecast.description }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Date and time:</strong></div>
-                  <div class="right_div">{{ wForecast.dateTime }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>UV index:</strong></div>
-                  <div class="right_div">{{ wForecast.uvIndex }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Visibility:</strong></div>
-                  <div class="right_div">{{ wForecast.visibility }} {{ LENGTH_UNIT }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Humidity:</strong></div>
-                  <div class="right_div">{{ wForecast.humidity }}%</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Wind speed:</strong></div>
-                  <div class="right_div">{{ wForecast.windSpeed }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Forecast type:</strong></div>
-                  <div class="right_div">{{ wForecast.forecastType }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Feels like temperature:</strong></div>
-                  <div class="right_div">{{ wForecast.feelsLikeTemperature }} {{ TEMP_UNIT }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Pressure:</strong></div>
-                  <div class="right_div">{{ wForecast.pressure }}</div>
-                </li>
-              </ul>
+            <li *ngFor="let wForecast of hourlyWFColl.weatherForecasts" class="individual-forecast">
+              <app-individual-forecast [wForecast]="wForecast"
+                                       [divLen]="leftDivLen"
+                                       [TEMP_UNIT]="TEMP_UNIT"
+                                       [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
             </li>
           </ul>
         </article>
@@ -58,7 +16,7 @@
     </section>
     <section>
       <h2>Request Weather Forecast</h2>
-      <div class="input_div">
+      <div class="input-div">
         <button [disabled]="!currWForecast || currWForecast.city == hourlyWFColl?.city"
                 (click)="onHourlyForecastButt()"
                 type="button">HOURLY</button>
@@ -74,106 +32,24 @@
       <div *ngIf="currWForecast">
         <h3>Current</h3>
         <article>
-          <ul class="individual_forecast">
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Name:</strong></div>
-              <div class="right_div">{{ currWForecast.city }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Temperature:</strong></div>
-              <div class="right_div">{{ currWForecast.temperature }} {{ TEMP_UNIT }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Description:</strong></div>
-              <div class="right_div">{{ currWForecast.description }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Date and time:</strong></div>
-              <div class="right_div">{{ currWForecast.dateTime }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>UV index:</strong></div>
-              <div class="right_div">{{ currWForecast.uvIndex }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Visibility:</strong></div>
-              <div class="right_div">{{ currWForecast.visibility }} {{ LENGTH_UNIT }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Humidity:</strong></div>
-              <div class="right_div">{{ currWForecast.humidity }}%</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Wind speed:</strong></div>
-              <div class="right_div">{{ currWForecast.windSpeed }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Forecast type:</strong></div>
-              <div class="right_div">{{ currWForecast.forecastType }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Feels like temperature:</strong></div>
-              <div class="right_div">{{ currWForecast.feelsLikeTemperature }} {{ TEMP_UNIT }}</div>
-            </li>
-            <li>
-              <div [style.width.px]="leftDivLen"><strong>Pressure:</strong></div>
-              <div class="right_div">{{ currWForecast.pressure }}</div>
-            </li>
-          </ul>
+          <div class="individual-forecast">
+            <app-individual-forecast [wForecast]="currWForecast"
+                                     [divLen]="leftDivLen"
+                                     [TEMP_UNIT]="TEMP_UNIT"
+                                     [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
+          </div>
         </article>
       </div>
     </section>
-    <section class="non_curr_weather_section">
+    <section class="non-curr-weather-section">
       <div *ngIf="dailyWFColl">
         <article>
           <ul>
-            <li *ngFor="let wForecast of dailyWFColl.weatherForecasts" class="individual_forecast">
-              <ul>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Name:</strong></div>
-                  <div class="right_div">{{ wForecast.city }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Temperature:</strong></div>
-                  <div class="right_div">{{ wForecast.temperature }} {{ TEMP_UNIT }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Description:</strong></div>
-                  <div class="right_div">{{ wForecast.description }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Date and time:</strong></div>
-                  <div class="right_div">{{ wForecast.dateTime }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>UV index:</strong></div>
-                  <div class="right_div">{{ wForecast.uvIndex }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Visibility:</strong></div>
-                  <div class="right_div">{{ wForecast.visibility }} {{ LENGTH_UNIT }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Humidity:</strong></div>
-                  <div class="right_div">{{ wForecast.humidity }}%</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Wind speed:</strong></div>
-                  <div class="right_div">{{ wForecast.windSpeed }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Forecast type:</strong></div>
-                  <div class="right_div">{{ wForecast.forecastType }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Feels like temperature:</strong></div>
-                  <div class="right_div">{{ wForecast.feelsLikeTemperature }} {{ TEMP_UNIT }}</div>
-                </li>
-                <li>
-                  <div [style.width.px]="leftDivLen"><strong>Pressure:</strong></div>
-                  <div class="right_div">{{ wForecast.pressure }}</div>
-                </li>
-              </ul>
+            <li *ngFor="let wForecast of dailyWFColl.weatherForecasts" class="individual-forecast">
+              <app-individual-forecast [wForecast]="wForecast"
+                                       [divLen]="leftDivLen"
+                                       [TEMP_UNIT]="TEMP_UNIT"
+                                       [LENGTH_UNIT]="LENGTH_UNIT"></app-individual-forecast>
             </li>
           </ul>
         </article>

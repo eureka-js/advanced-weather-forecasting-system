@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {WeatherForecastCollection} from "../../models/weather-forecast-collection.model";
+import {FavoriteCity} from "../../models/favorite-city.model";
 
 
 @Injectable({
@@ -12,8 +13,9 @@ export class DataService {
   readonly CURR_W_FORECAST_URL: string = "api/weather/current/";
   readonly HOURLY_W_FORECAST_URL: string = "api/weather/hourly/";
   readonly DAILY_W_FORECAST_URL: string = "api/weather/daily/";
-  readonly POST_FAVORITE_CITY_URL: string = "api/user/favorite";
-  readonly GET_FORECASTS_BY_FAV_CITIES_URL: string = "api/weather/favorites";
+  readonly FAVORITE_CITY_URL: string = "api/user/favorite";
+  readonly FAV_CITIES_FORECASTS_URL: string = "api/weather/favorites";
+  readonly FAVORITE_CITIES_URL: string = "api/user/favorites/";
 
 
   constructor(private readonly httpClient: HttpClient) { }
@@ -36,12 +38,20 @@ export class DataService {
   }
 
   addFavoriteCity(username: string, cityName: string): Observable<any> {
-    return this.httpClient.post(this.W_FORECAST_APP_URL + this.POST_FAVORITE_CITY_URL
+    return this.httpClient.post(this.W_FORECAST_APP_URL + this.FAVORITE_CITY_URL
       , { "id": null, "username": username, "cityName": cityName });
+  }
+
+  delFavoriteCity(id: number): Observable<any> {
+    return this.httpClient.delete(this.W_FORECAST_APP_URL + this.FAVORITE_CITY_URL + "/" + id);
+  }
+
+  getFavoriteCities(cityName: string): Observable<FavoriteCity[]> {
+    return this.httpClient.get<FavoriteCity[]>(this.W_FORECAST_APP_URL + this.FAVORITE_CITIES_URL + cityName);
   }
 
   reqForecastCollByFavoriteCities(username: string): Observable<WeatherForecastCollection[]> {
     return this.httpClient.get<WeatherForecastCollection[]>(this.W_FORECAST_APP_URL
-      + this.GET_FORECASTS_BY_FAV_CITIES_URL + "?username=" + username);
+      + this.FAV_CITIES_FORECASTS_URL + "?username=" + username);
   }
 }

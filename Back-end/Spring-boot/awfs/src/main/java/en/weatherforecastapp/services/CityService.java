@@ -14,4 +14,6 @@ public interface CityService {
     Optional<City> getCityByName(final String name) throws NotFoundException, JsonProcessingException;
     Optional<City> findFirstByName(final String cityName);
     List<String> findCityNameByUserId(final Long userId);
+    List<FavoriteCityDTO> getFavoriteCities(final String cityName);
+    boolean removeFavoriteCity(final Long id);
 }

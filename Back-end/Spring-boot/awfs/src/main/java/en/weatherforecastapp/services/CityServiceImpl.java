@@ -55,6 +55,7 @@ public class CityServiceImpl implements CityService {
         return true;
     }
 
+    @Override
     public Optional<City> getCityByName(final String cityName) throws NotFoundException, JsonProcessingException {
         final JsonNode cityInf = weatherApiClient.getCityInf(cityName, new ObjectMapper());
         final String cityNameFromWebService = cityInf.get("name").asText();
@@ -72,5 +73,22 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<String> findCityNameByUserId(final Long userId) {
         return favCityJpaRepository.findCity_NameByUser_Id(userId);
+    }
+
+    @Override
+    public List<FavoriteCityDTO> getFavoriteCities(final String username) {
+        return favCityJpaRepository.findAllByUser_Username(username).stream().map(this::mapFavCityToFavCityDTO).toList();
+    }
+
+    @Override
+    public boolean removeFavoriteCity(final Long id) {
+        favCityJpaRepository.deleteById(id);
+
+        return true;
+    }
+
+
+    public FavoriteCityDTO mapFavCityToFavCityDTO(final FavoriteCity fc) {
+        return new FavoriteCityDTO(fc);
     }
 }
